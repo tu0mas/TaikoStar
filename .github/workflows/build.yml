@@ -1,0 +1,36 @@
+name: Build and Test C# Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Cloner le code source
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Configurer .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0' # Remplacez par la version .NET que vous utilisez
+
+      # Étape 3 : Restaurer les dépendances
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Étape 4 : Compiler le projet
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      # Étape 5 : Tester le projet
+      - name: Run Tests
+        run: dotnet test --no-build --verbosity normal
